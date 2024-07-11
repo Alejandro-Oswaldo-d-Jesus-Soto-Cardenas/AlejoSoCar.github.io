@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres que Viaje?</title>
+    <meta property="og:title" content="¿Quieres que Viaje?">
+    <meta property="og:description" content="Descubre la respuesta a esta pregunta seria con un solo clic.">
+    <meta property="og:image" content="https://example.com/imagen-compartir.jpg"> <!-- URL de la imagen para compartir -->
+    <meta property="og:url" content="https://tu-usuario.github.io/pagina-web/"> <!-- Cambia aquí la URL que deseas mostrar -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://i.pinimg.com/564x/e0/36/f5/e036f5dac292d44098051d5e951a00bd.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1, button, #respuesta {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #007bff; /* Color de fondo de los botones */
+            color: white; /* Color de texto de los botones */
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: transform 0.3s ease; /* Transición para el crecimiento del botón */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Color de fondo al pasar el cursor sobre los botones */
+        }
+
+        #respuesta {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: white; /* Color de texto predeterminado */
+            text-shadow: 1px 1px 2px #000000;
+        }
+
+        #respuesta.si {
+            color: #28a745; /* Color de texto para respuesta "Sí" */
+        }
+
+        #respuesta.no {
+            color: #dc3545; /* Color de texto para respuesta "No" */
+        }
+
+        .confeti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .particula {
+            position: absolute;
+            background-color: transparent;
+            width: 15px;
+            height: 15px;
+            opacity: 0.8;
+            animation: caidaConfeti 5s ease-out infinite;
+            transform: rotateZ(180deg);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .particula:before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: -7px;
+            width: 30px;
+            height: 30px;
+            background-color: #ff4d4d; /* Color del confeti */
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .carita-llorando {
+            position: absolute;
+            font-size: 3rem;
+            animation: llorar 5s ease-out forwards; /* Animación para las caritas llorando */
+        }
+
+        @keyframes caidaConfeti {
+            0% {
+                transform: translateY(-100vh) rotateZ(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(360deg);
+            }
+        }
+
+        @keyframes llorar {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Quieres que Viaje?</h1>
+        <button id="btnSi">Sí</button>
+        <button id="btnNo">No</button>
+        <div id="respuesta"></div>
+    </div>
+
+    <script>
+        var contadorClicksSi = 0;
+        var mostrarConfetiDespuesDe = 10;
+        var mensajesSi = [
+            "¿En serio?",
+            "¿De veras?",
+            "Yo creo que no...",
+            "Ya veo...",
+            "Okok...",
+            "Me lo pensaré...",
+            "Me estás convenciendo...",
+            "Wiu wiu...",
+            "¡Me estás convenciendo!"
+        ];
+        var caritasLlorandoMostradas = false;
+
+        document.getElementById('btnSi').addEventListener('click', function() {
+            contadorClicksSi++;
+            var escala = 1 + contadorClicksSi * 0.1;
+            document.getElementById('btnSi').style.transform = 'scale(' + escala + ')';
+            
+            if (contadorClicksSi < mostrarConfetiDespuesDe) {
+                var mensajeIndex = Math.floor(Math.random() * mensajesSi.length);
+                document.getElementById('respuesta').innerHTML = mensajesSi[mensajeIndex];
+            } else if (contadorClicksSi === mostrarConfetiDespuesDe) {
+                mostrarMensajeSi();
+                mostrarConfeti();
+                // Reiniciar contador para la próxima vez
+                contadorClicksSi = 0;
+                document.getElementById('btnSi').style.transform = 'scale(1)';
+            }
+        });
+
+        document.getElementById('btnNo').addEventListener('click', function() {
+            mostrarCaritasLlorando();
+            mostrarMensajeNo();
+        });
+
+        function mostrarMensajeSi() {
+            document.getElementById('respuesta').innerHTML = '¡Ok! Iré la otra semana 😊';
+            document.getElementById('btnSi').disabled = true; // Deshabilita el botón "Sí" después de hacer clic
+            document.getElementById('btnNo').disabled = true; // Deshabilita el botón "No"
+        }
+
+        function mostrarMensajeNo() {
+            document.getElementById('respuesta').innerHTML = '😢 Ya no me quieres...';
+            document.getElementById('btnNo').innerHTML = '😢 No';
+            document.getElementById('btnNo').disabled = true; // Deshabilita el botón "No" después de hacer clic
+            document.getElementById('btnSi').disabled = false; // Habilita el botón "Sí" para la próxima vez
+        }
+
+        function mostrarConfeti() {
+            var confetiContainer = document.createElement('div');
+            confetiContainer.className = 'confeti';
+            document.body.appendChild(confetiContainer);
+
+            for (var i = 0; i < 200; i++) {
+                var particula = document.createElement('div');
+                particula.className = 'particula';
+                particula.style.left = Math.random() * 100 + 'vw';
+                particula.style.top = Math.random() * 100 + 'vh';
+                particula.style.backgroundColor = getRandomColor(); // Color aleatorio para cada confeti
+                confetiContainer.appendChild(particula);
+            }
+
+            setTimeout(function() {
+                confetiContainer.remove();
+            }, 5000); // Elimina el confeti después de 5 segundos
+        }
+
+        function mostrarCaritasLlorando() {
+            if (!caritasLlorandoMostradas) {
+                var caritasContainer = document.createElement('div');
+                caritasContainer.className = 'confeti'; // Reutilizando la clase confeti para colocar caritas
+                document.body.appendChild(caritasContainer);
+
+                for (var i = 0; i < 20; i++) {
+                    var carita = document.createElement('div');
+                    carita.className = 'carita-llorando';
+                    carita.innerHTML = '😢';
+                    carita.style.left = Math.random() * 100 + 'vw';
+                    carita.style.top = Math.random() * 100 + 'vh';
+                    caritasContainer.appendChild(carita);
+                }
+
+                setTimeout(function() {
+                    caritasContainer.remove();
+                }, 3000); // Elimina las caritas después de 3 segundos
+
+                caritasLlorandoMostradas = true;
+            }
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
